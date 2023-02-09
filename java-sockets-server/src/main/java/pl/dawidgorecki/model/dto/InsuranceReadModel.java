@@ -17,6 +17,6 @@ public class InsuranceReadModel {
 
     @Override
     public String toString() {
-        return "Ubezpieczyciel: " + insurer + ", cena: " + price;
+        return insurer + ", " + price + "pln";
     }
 }

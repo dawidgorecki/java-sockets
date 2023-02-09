@@ -23,6 +23,6 @@ public class VehicleReadModel {
 
     @Override
     public String toString() {
-        return "Marka:  " + brand + ", model: " + model + ", oferty: " + insuranceOffers;
+        return "Pojazd: " + brand + " " + model + ", oferty: " + insuranceOffers;
     }
 }

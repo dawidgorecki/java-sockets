@@ -7,11 +7,9 @@ public class ConsoleInput {
     private ConsoleInput() {
     }
 
-    public static long getLong(String message) {
+    public static long getLong() {
         long input = 0;
         boolean isValid = false;
-
-        System.out.print(message);
 
         while (!isValid) {
             try {
@@ -20,7 +18,6 @@ public class ConsoleInput {
                 isValid = true;
             } catch (InputMismatchException e) {
                 System.out.println("[!] Niepoprawna wartość");
-                System.out.print(message);
             }
         }
 

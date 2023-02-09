@@ -9,45 +9,25 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 public class Client {
-    private Socket clientSocket;
-    private BufferedReader input;
-    private PrintWriter output;
-
     public void startConnection(String ip, int port) {
-        try {
-            clientSocket = new Socket(ip, port);
-            output = new PrintWriter(clientSocket.getOutputStream(), true);
-            input = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+        try (
+                Socket clientSocket = new Socket(ip, port);
+                PrintWriter output = new PrintWriter(clientSocket.getOutputStream(), true);
+                InputStreamReader in = new InputStreamReader(clientSocket.getInputStream());
+                BufferedReader input = new BufferedReader(in)
+        ) {
+            String welcomeMessage = input.readLine();
+            System.out.println(welcomeMessage);
 
-            long userId = ConsoleInput.getLong("Wprowadź ID użytkownika: ");
-
-            // send user id to the server
+            long userId = ConsoleInput.getLong();
             output.println(userId);
 
-            // proceed server response
             String response;
             while ((response = input.readLine()) != null) {
-                if (response.equals("/q")) {
-                    break;
-                }
-
-                // ...otherwise print response
                 System.out.println(response);
             }
         } catch (IOException e) {
             System.out.println("[!] Nie można połączyć z serwerem");
-        } finally {
-            closeConnection();
-        }
-    }
-
-    public void closeConnection() {
-        try {
-            if (input != null) input.close();
-            if (output != null) output.close();
-            if (clientSocket != null && clientSocket.isConnected()) clientSocket.close();
-        } catch (IOException e) {
-            // error when closing
         }
     }
 }

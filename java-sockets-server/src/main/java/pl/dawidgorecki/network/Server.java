@@ -20,9 +20,10 @@ public class Server {
         ) {
             ExecutorService executorService = Executors.newCachedThreadPool();
 
+            System.out.println("[!] Oczekuje na połączenie...");
             while (!serverSocket.isClosed()) {
                 Socket client = serverSocket.accept();
-                System.out.println("[!] Nowe połączenie " + client.getInetAddress().toString());
+                System.out.println("[+] Nowe połączenie " + client.getInetAddress().toString());
                 executorService.execute(new ConnectionHandler(client));
             }
         } catch (IOException e) {
@@ -47,10 +48,15 @@ public class Server {
                 output.println("Wprowadź ID użytkownika: ");
                 String response = input.readLine();
 
+                System.out.println("[>] wysyłanie danych dla user.id = " + response);
                 VehicleService service = new VehicleService();
                 List<VehicleReadModel> vehicles = service.findAllByUserId(Long.parseLong(response), true);
 
-                vehicles.forEach(output::println);
+                if (vehicles.isEmpty()) {
+                    output.println("Nie znaleziono żadnego pojazdu");
+                } else {
+                    vehicles.forEach(output::println);
+                }
             } catch (IOException e) {
                 throw new RuntimeException();
             }
